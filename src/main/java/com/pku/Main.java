@@ -33,6 +33,7 @@ public class Main {
                 String[] keywords = input.strip().split(",");
              
                 MiniSteinerTree miniSteinerTree = new MiniSteinerTree(graph,keywords);
+                miniSteinerTree.getMiniSteinerTree();
             }
             sc.close();
 
