@@ -9,25 +9,26 @@ import java.util.Set;
 import com.pku.model.*;
 
 public class MiniSteinerTree {
-    Graph graph;
-    Set<Node> miniSteinerTree;
-    DpRecord[][] dpRecord;
+    Graph graph; // Web API构成的图
+    Set<Node> miniSteinerTree; //最小斯坦纳树构成的API集合
+    DpRecord[][] dpRecord; // dpRecord(i,S) 记录dp(i,S) 是由哪个状态转移过来的。
+    // dp[i][S]表示以i为根，连通状态是S的连通图最小权重和。S是一个二进制数，表示连通图中是否包含k个关键词，如果连通图中包含第i个关键词，那么S第i位是1。
     long[][] dp;
-    String[] keywords;
-    long minimumValue = Integer.MAX_VALUE;
+    String[] keywords; //表示一组关键词
+    long minimumValue = Integer.MAX_VALUE; //最小斯坦纳树的边权之和
 
     public MiniSteinerTree(Graph graph, String[] keywords) {
         this.graph = graph;
         this.keywords = keywords;
         this.miniSteinerTree = new HashSet<>();
         int n = graph.nodeCount, k = keywords.length;
-     
-        dp = new long[n][1 << k]; // 存储状态压缩DP的结果，表示以i为根节点状态S时的最小权重和
-        dpRecord = new DpRecord[n][1 << k];
-
-        getMiniSteinerTree();
+        this.dp = new long[n][1 << k]; // 存储状态压缩DP的结果，表示以i为根节点状态S时的最小权重和
+        this.dpRecord = new DpRecord[n][1 << k];
     }
 
+    /*
+     * 求解最小斯坦纳树
+     */
     public void getMiniSteinerTree() {
         int n = graph.nodeCount, k = keywords.length;
 
@@ -67,6 +68,9 @@ public class MiniSteinerTree {
         calculateEdgeSum();
     }
 
+    /*
+     * 计算最小斯坦纳树的边权之和
+     */
     private void calculateEdgeSum() {
         int s = (1 << keywords.length) - 1;
 
@@ -88,6 +92,9 @@ public class MiniSteinerTree {
 
     }
 
+    /*
+     * 找到最小斯坦纳树的点集
+     */
     private void findNodes(DpState state) {
 
         if (state == null)
@@ -142,6 +149,9 @@ public class MiniSteinerTree {
     }
 }
 
+/*
+ * 将dp(i,S)封装成DpState（i,S,dp(i,S)）
+ */
 class DpState {
     Node node;
     int visited;
@@ -154,6 +164,9 @@ class DpState {
     }
 }
 
+/*
+ * dpRecord(i,S) 记录dp(i,S) 是由哪个状态转移过来的
+ */
 class DpRecord {
     DpState fromState1;
     DpState fromState2;
