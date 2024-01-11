@@ -1,4 +1,5 @@
-/target
-/.lib
+target/
+# .lib
+pom.xml
 .DS_STORE
 .DS_Store
