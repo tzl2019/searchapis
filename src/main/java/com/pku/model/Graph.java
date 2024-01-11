@@ -34,9 +34,7 @@ public class Graph {
             categoryNodeMap.computeIfAbsent(categories.get(i), k -> new ArrayList<>()).add(node);
             // apiCatMap.compute(apis.get(index), (k,v) -> categories.get(index));
         }
-        System.out.println("关键字个数："+categoryNodeMap.size());
-        System.out.println("API个数："+nodeCount);
-        System.out.println("API关联个数："+edgeWeightMap.entrySet().size());
+        
         for (int i = 0; i < edge_source.size(); i++) {
 
             if (apiNodeMap.containsKey(edge_source.get(i)) == false ||
@@ -58,6 +56,9 @@ public class Graph {
             Edge newEdge=new Edge(source,target,edgeWeightMaximum - weight);
             source.neighborEdge.add(newEdge);
         });
+        System.out.println("关键字个数："+categoryNodeMap.size());
+        System.out.println("API个数："+nodeCount);
+        System.out.println("共同出现的API对："+edgeWeightMap.entrySet().size());
     }
 
 }

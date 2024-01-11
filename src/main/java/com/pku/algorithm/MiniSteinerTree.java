@@ -79,9 +79,9 @@ public class MiniSteinerTree {
             minimumValue = Math.min(minimumValue, dp[i][s]);
 
         }
-        System.out.println("连通块最小值: " + minimumValue); // 输出结果
+        System.out.println("最小斯坦纳树权重和: " + minimumValue); // 输出结果
         findNodes(state);
-        System.out.println("连通块中包含web API：");
+        System.out.println("最小斯坦纳树包含"+miniSteinerTree.size()+"个Web API，分别是：");
         for (Node node : miniSteinerTree) {
             System.out.println(node.getName());
         }
