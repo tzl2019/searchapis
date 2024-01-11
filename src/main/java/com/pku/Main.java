@@ -31,18 +31,8 @@ public class Main {
                 if(input.contains("end")) break;
                 
                 String[] keywords = input.strip().split(",");
-                // List<List<Node>> searchLists = new ArrayList<>();
-                // for (String keyword: keywords){
-                //     searchLists.add(graph.search(keyword));
-                // }
              
                 MiniSteinerTree miniSteinerTree = new MiniSteinerTree(graph,keywords);
-                // int[] path = miniSteinerTree.getMiniSteinerTree();
-                System.out.print("Web APIs: ");
-                // for (int i : path) {
-                //     System.out.print(collectionUtils.getKeyByValue(subgraph.nodeIdMap, i) + ", ");
-                // }
-                System.out.println();
             }
             sc.close();
 
