@@ -1,85 +1,63 @@
 package com.pku.model;
 
 import java.util.*;
-import com.pku.util.InvertedIndex;
+
 public class Graph {
-    private Set<Node> nodes;
-    private Set<Edge> edges;
-    public Map<String, Integer> nodeIdMap;
+
+    public Map<String, Node> apiNodeMap;
     public Map<Edge, Integer> edgeWeightMap;
-    private InvertedIndex invertedIndex;
+    public Map<String, List<Node>> categoryNodeMap;
+    public List<Node> nodeList;
+    public int edgeWeightMaximum = 100;
+    public int nodeCount;
 
     public Graph() {
-        nodes = new HashSet<>();
-        edges = new HashSet<>();
-        nodeIdMap = new HashMap<>();
+        nodeList = new ArrayList<Node>();
         edgeWeightMap = new HashMap<>();
+        apiNodeMap=new HashMap<>();
+        categoryNodeMap=new HashMap<>();
     }
 
-    public void addNode(String nodeName, String category) {
-        Node newNode = new Node(nodeName, category);
-        nodes.add(newNode);
-        this.createNodeId();
-    }
+    public Graph(List<String> apis, List<String> categories, List<String> edge_source, List<String> edge_target) {
 
-    public void addNodes(List<Node> nodes) {
-        this.nodes.addAll(nodes);
-        this.createNodeId();
-    }
-    
-    public void addEdge(String node1Name, String node2Name, int weight) {
-        Node node1 = new Node(node1Name);
-        Node node2 = new Node(node2Name);
-        if((!this.nodes.contains(node1)) || (!this.nodes.contains(node2))) { 
-            this.nodes.add(node1);
-            this.nodes.add(node2);
+        nodeCount = apis.size();
+        nodeList = new ArrayList<Node>();
+        edgeWeightMap = new HashMap<>();
+        apiNodeMap=new HashMap<>();
+        categoryNodeMap=new HashMap<>();
+
+        for (int i = 0; i < nodeCount; i++) {
+            Node node=new Node(apis.get(i), categories.get(i),i);
+            nodeList.add(node);
+
+            apiNodeMap.put(apis.get(i), node);
+            categoryNodeMap.computeIfAbsent(categories.get(i), k -> new ArrayList<>()).add(node);
+            // apiCatMap.compute(apis.get(index), (k,v) -> categories.get(index));
         }
-        Edge newEdge = new Edge(node1Name, node2Name, weight);
-        edges.add(newEdge);
-        edgeWeightMap.compute(newEdge, (k,v) -> weight);
-        node1.neighbors.add(node2);
-        node2.neighbors.add(node1);
-        createNodeId();
-    }
+        System.out.println("关键字个数："+categoryNodeMap.size());
+        System.out.println("API个数："+nodeCount);
+        System.out.println("API关联个数："+edgeWeightMap.entrySet().size());
+        for (int i = 0; i < edge_source.size(); i++) {
 
-    public void setInvertedIndex() {
-        invertedIndex = new InvertedIndex(nodes);
-    }
-
-    public Set<Node> getNodes() {
-        return nodes;
-    }
-    public Set<Edge> getEdges() {
-        return edges;
-    }
-    public void createNodeId(){
-        List<Node> tempNodes = new ArrayList<Node>(this.nodes);
-        for (int i = 0; i < tempNodes.size(); i++) {
-            int curId = i;
-            tempNodes.get(i).id = curId;
-            nodeIdMap.compute(tempNodes.get(i).getName(), (k,v) -> curId);
-        }
-    }
-    public Graph buildSubGraph(List<Node> nodes) {
-        Graph subGraph = new Graph();
-        subGraph.addNodes(nodes);
-        for (Node node: nodes){
-            for (Node neighbor: node.getNeighbors()){
-                subGraph.addEdge(node.getName(), neighbor.getName(), 0);
+            if (apiNodeMap.containsKey(edge_source.get(i)) == false ||
+                    apiNodeMap.containsKey(edge_target.get(i)) == false) {
+                continue;
             }
+            Node source = apiNodeMap.get(edge_source.get(i));
+            Node target = apiNodeMap.get(edge_target.get(i));
+
+            edgeWeightMap.compute(new Edge(source, target), (key, value) -> (value == null) ? 1 : value + 1);
+            edgeWeightMap.compute(new Edge(target, source), (key, value) -> (value == null) ? 1 : value + 1);
         }
-        for (Edge edge : subGraph.getEdges()) {
-            int weight = this.edgeWeightMap.get(edge);
-            edge.setWeight(weight);
-            subGraph.edgeWeightMap.compute(edge, (k,v) -> weight);
-        }
-        return subGraph;
-    }
-    public void buildInvertedIndex(){
-        invertedIndex = new InvertedIndex(nodes);
-    }
-    public List<Node> search(String keyword) {
-        return invertedIndex.search(keyword);
+        edgeWeightMap.values().forEach((value) -> edgeWeightMaximum =
+        Math.max(edgeWeightMaximum, value));
+
+        edgeWeightMap.forEach((edge, weight) -> {
+            Node source = edge.getSource();
+            Node target = edge.getTarget();
+            Edge newEdge=new Edge(source,target,edgeWeightMaximum - weight);
+            source.neighborEdge.add(newEdge);
+        });
     }
 
 }

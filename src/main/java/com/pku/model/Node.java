@@ -9,10 +9,17 @@ public class Node {
     private String name;
     private String category;
     public Set<Node> neighbors;
+    public Set<Edge> neighborEdge;
     public Node(String name, String category) {
         this.name = name;
         this.category = category;
         this.neighbors = new HashSet<Node>();
+    }
+    public Node(String name, String category,int id) {
+        this.name = name;
+        this.category = category;
+        this.id=id;
+        this.neighborEdge = new HashSet<Edge>();
     }
     public Node(String name) {
         this.name = name;
