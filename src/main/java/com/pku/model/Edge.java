@@ -3,23 +3,23 @@ package com.pku.model;
 import java.util.Objects;
 
 public class Edge {
-    private String source;
-    private String target;
+    private Node source;
+    private Node target;
     private int weight;
 
-    public Edge(String source, String target, int weight) {
+    public Edge(Node source, Node target, int weight) {
         this.source = source;
         this.target = target;
         this.weight = weight;
     }
-    public Edge(String source, String target) {
+    public Edge(Node source, Node target) {
         this.source = source;
         this.target = target;
     }
-    public String getSource() {
+    public Node getSource() {
         return source;
     }
-    public String getTarget() {
+    public Node getTarget() {
         return target;
     }
     public int getWeight() {
