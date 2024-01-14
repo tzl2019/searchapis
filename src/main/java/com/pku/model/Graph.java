@@ -32,7 +32,6 @@ public class Graph {
 
             apiNodeMap.put(apis.get(i), node);
             categoryNodeMap.computeIfAbsent(categories.get(i), k -> new ArrayList<>()).add(node);
-            // apiCatMap.compute(apis.get(index), (k,v) -> categories.get(index));
         }
         
         for (int i = 0; i < edge_source.size(); i++) {

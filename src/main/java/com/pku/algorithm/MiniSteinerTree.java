@@ -57,8 +57,6 @@ public class MiniSteinerTree {
                         dp[i][s] = dp[i][t] + dp[i][s ^ t];
                         dpRecord[i][s] = new DpRecord(new DpState(graph.nodeList.get(i), t, dp[i][t]),
                                 new DpState(graph.nodeList.get(i), s ^ t, dp[i][s ^ t]));
-                        // dpRecord[i][s].fromState1=new DpState(graph.nodeList.get(i),t,dp[i][t]);
-                        // dpRecord[i][s].fromState2=new DpState(graph.nodeList.get(i),s^t,dp[i][s^t]);
                     }
                 }
             }
@@ -96,7 +94,6 @@ public class MiniSteinerTree {
      * 找到最小斯坦纳树的点集
      */
     private void findNodes(DpState state) {
-
         if (state == null)
             return;
         miniSteinerTree.add(state.node);
@@ -106,12 +103,12 @@ public class MiniSteinerTree {
             return;
         findNodes(record.fromState1);
         findNodes(record.fromState2);
-        // findNodes(dpRecord, record.fromState2, answerNodeList);
-
     }
 
-    // 处理状态s下的最短路径情况
-    private void deal(int s) {
+    /*
+     * 处理状态s下的最短路径情况,实现dp(e.source,S)+e.weight→dp(e.target,S)状态转移方程
+     */
+    private void deal(int s) {  
         int n = graph.nodeCount;
         // 建立优先队列，数组中索引值为1的数字越小，优先级越高
         PriorityQueue<DpState> pq = new PriorityQueue<>((o1, o2) -> Long.compare(o1.value, o2.value));
@@ -139,8 +136,6 @@ public class MiniSteinerTree {
                 int i = edge.getTarget().id;
                 if (tmp.value + edge.getWeight() < dp[i][s]) {
                     dp[i][s] = (tmp.value + edge.getWeight());
-                    // dpRecord[i][s].fromState1=tmp;
-                    // dpRecord[i][s].fromState2=null;
                     dpRecord[i][s] = new DpRecord(tmp, null);
                     pq.add(new DpState(edge.getTarget(), s, dp[i][s]));
                 }
