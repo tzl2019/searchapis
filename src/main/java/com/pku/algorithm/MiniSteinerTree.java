@@ -26,6 +26,17 @@ public class MiniSteinerTree {
         this.dpRecord = new DpRecord[n][1 << k];
     }
 
+    //getter
+    public Graph getGraph(){
+        return graph;
+    }
+    public long getMinimumValue(){
+        return minimumValue;
+    }
+    public Set<Node> getNodes(){
+        return miniSteinerTree;
+    }
+
     /*
      * 求解最小斯坦纳树
      */
