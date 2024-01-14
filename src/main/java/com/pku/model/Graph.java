@@ -60,4 +60,14 @@ public class Graph {
         System.out.println("共同出现的API对："+edgeWeightMap.entrySet().size());
     }
 
+    //getter
+    public Map<String, Node> getApiNodeMap(){
+        return apiNodeMap;
+    }
+    public Map<Edge, Integer> getEdgeWeightMap(){
+        return edgeWeightMap;
+    }
+    public int getNodeCount(){
+        return nodeCount;
+    }
 }
