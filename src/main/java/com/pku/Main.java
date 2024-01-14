@@ -22,7 +22,6 @@ public class Main {
         try {
             Graph graph = csvParser.getGraph(mashupOutput, apisOutput);
 
-            // graph.buildInvertedIndex();
             Scanner sc = new Scanner(System.in);
             while (true) {
                 

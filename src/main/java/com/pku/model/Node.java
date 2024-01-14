@@ -55,6 +55,5 @@ public class Node {
         if (o == null) return false;
         Node other = (Node) o;
         return this.name.equals(other.getName());
-
     }
 }
